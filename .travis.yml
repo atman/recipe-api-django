@@ -13,7 +13,6 @@ install:
   - pip install -r requirements.txt
 
 before_script:
-  - cp config/database.travis.yml config/database.yml
   - psql -c "CREATE DATABASE recipedb;" -U postgres
 
 script:

@@ -1,6 +1,0 @@
-postgresql: &postgresql
-  adapter: postgresql
-  username: postgres
-  password: testpassword
-  database: recipedb
-  min_messages: ERROR
