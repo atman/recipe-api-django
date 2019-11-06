@@ -1,0 +1,26 @@
+language: python
+
+python:
+  - 3.4
+
+services:
+  - postgresql
+
+env:
+  - DJANGO=2.2.4
+
+before_install:
+  - export DJANGO_SETTINGS_MODULE=ProjectRecipe.settings
+
+install:
+  - pip install -r requirements.txt
+  - pip install django==$DJANGO --quiet
+  - pip install psycopg2 --quiet
+
+before_script:
+  - psql -c "CREATE DATABASE recipedb;" -U postgres
+  - cp config/database.travis.yml config/database.yml
+
+script:
+  - python manage.py migrate
+  - python manage.py test

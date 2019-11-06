@@ -11,7 +11,7 @@ class CustomUserAdmin(BaseUserAdmin):
         (None, {'fields': ('email', 'password')}),
         (_('Personal Info'), {'fields': ('name',)}),
         (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser')}),
-        (_('Activity'), {'fields':('last_login', 'created_on')})
+        (_('Activity'), {'fields': ('last_login', 'created_on')})
     )
     # Go through Admin model documentation to understand this better
     add_fieldsets = (
@@ -21,7 +21,6 @@ class CustomUserAdmin(BaseUserAdmin):
         }),
     )
 
-admin.site.register(models.User, CustomUserAdmin)
+
+admin.site.register(models.CustomUser, CustomUserAdmin)
 admin.site.register(models.Tag)
-
-

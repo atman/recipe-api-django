@@ -1,6 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, \
-                                        PermissionsMixin
+    PermissionsMixin
 from django.utils import timezone
 from django.conf import settings
 
@@ -28,7 +28,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, PermissionsMixin):
+class CustomUser(AbstractBaseUser, PermissionsMixin):
     """Custom User Model that uses email instead of username"""
     email = models.EmailField(max_length=255, unique=True)
     name = models.CharField(max_length=255)
@@ -45,13 +45,12 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Tag(models.Model):
     """Tags to be used for recipe"""
-    name = models.CharField(max_length=255),
-    user = models.ForeignKey(
+    name = models.CharField(max_length=255)
+    custom_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.CASCADE,
+        on_delete=models.DO_NOTHING,
     )
+    created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
-
-

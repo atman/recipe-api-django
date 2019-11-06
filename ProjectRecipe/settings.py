@@ -15,7 +15,6 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
@@ -26,7 +25,6 @@ SECRET_KEY = 'vadj75!d2!0s8w(k!p+$oxvk@hz9xhyjjn_17i3ub)+oc!qu(#'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
 
 # Application definition
 
@@ -42,7 +40,7 @@ INSTALLED_APPS = [
     'recipeapp.apps.RecipeappConfig',
     'rest_framework',
     'rest_framework.authtoken',
-    'djangosecure',
+    'sslserver'
 
 ]
 
@@ -79,7 +77,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ProjectRecipe.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -93,7 +90,6 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT')
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -113,7 +109,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
@@ -127,7 +122,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
@@ -139,4 +133,5 @@ STATICFILES_DIRS = (
 
 """CUSTOM ADDITIONS"""
 """[APPNAME].[MODEL NAME]"""
-AUTH_USER_MODEL = 'coreapp.User'
+
+AUTH_USER_MODEL = 'coreapp.CustomUser'

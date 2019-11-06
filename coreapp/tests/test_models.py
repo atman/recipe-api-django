@@ -2,6 +2,7 @@ from django.test import TestCase
 from django.contrib.auth import get_user_model
 from coreapp import models
 
+
 def sample_user(email='test@druk.com', password='testpass'):
     """Creates a sample User"""
     return get_user_model().objects.create_user(email, password)
@@ -42,12 +43,13 @@ class ModelTests(TestCase):
         self.assertTrue(user.is_superuser)
         self.assertTrue(user.is_staff)
 
-# ---------------------- FOR RECIPE APP -------------------
+    # ---------------------- FOR RECIPE APP -------------------
+
     def test_tag_str(self):
         """Test the tag if it it returns a string or not"""
         tag = models.Tag.objects.create(
-            user = sample_user(),
-            name = 'vegan'
+            custom_user=sample_user(),
+            name='vegan'
         )
 
         self.assertEqual(str(tag), tag.name)
