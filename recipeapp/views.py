@@ -7,47 +7,34 @@ from coreapp.models import Ingredient
 from recipeapp import serializers
 
 
-class TagViewSet(viewsets.GenericViewSet,
-                 mixins.ListModelMixin,
-                 mixins.CreateModelMixin,
-                 mixins.RetrieveModelMixin,
-                 mixins.UpdateModelMixin,
-                 mixins.DestroyModelMixin):
+class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
+                      mixins.ListModelMixin,
+                      mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.UpdateModelMixin,
+                      mixins.DestroyModelMixin):
+
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated, )
+
+    def get_queryset(self):
+        """Return queryset data for an object"""
+        return self.queryset.filter(custom_user=self.request.user).order_by('-name')
+
+    def perform_create(self, serializer):
+        """Save current user as part of the object"""
+        serializer.save(custom_user=self.request.user)
+
+
+class TagViewSet(BaseRecipeAttrViewSet):
     """Manage Tags in the database"""
 
-    # setting the REST framework authentication on a per-class basis
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
     queryset = Tag.objects.all()
     serializer_class = serializers.TagSerializer
 
-    def get_queryset(self):
-        """Return objects for the current authenticated user only"""
-        return self.queryset.filter(custom_user=self.request.user).order_by('-name')
 
-    def perform_create(self, serializer):
-        """Create new tags for authenticated users"""
-        serializer.save(custom_user=self.request.user)
-
-
-class IngredientViewSet(viewsets.GenericViewSet,
-                        mixins.ListModelMixin,
-                        mixins.CreateModelMixin,
-                        mixins.RetrieveModelMixin,
-                        mixins.UpdateModelMixin,
-                        mixins.DestroyModelMixin):
+class IngredientViewSet(BaseRecipeAttrViewSet):
     """Manage Ingredients in the database"""
 
-    # setting the REST framework authentication on a per-class basis
-    authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated,)
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
-
-    def get_queryset(self):
-        """Return objects for the current authenticated user only"""
-        return self.queryset.filter(custom_user=self.request.user).order_by('-name')
-
-    # Called before save; Goes up to the parent context and assigns the current user as the object creator
-    def perform_create(self, serializer):
-        serializer.save(custom_user=self.request.user)
