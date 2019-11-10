@@ -48,9 +48,23 @@ class Tag(models.Model):
     name = models.CharField(max_length=255)
     custom_user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
-        on_delete=models.DO_NOTHING,
+        on_delete=models.CASCADE,
     )
     created_on = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return self.name
+
+
+class Ingredient(models.Model):
+    """Ingredients to be used for recipe"""
+    name = models.CharField(max_length=255)
+    custom_user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+    )
+    created_on = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return self.name
+

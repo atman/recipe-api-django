@@ -20,6 +20,7 @@ import coreapp.views
 urlpatterns = [
     path('', coreapp.views.homepage),
     path('admin/', admin.site.urls),
+    path('api/auth', include('rest_framework.urls')),
     path('api/user/', include('userapp.urls')),
     path('api/recipe/', include('recipeapp.urls')),
 ]

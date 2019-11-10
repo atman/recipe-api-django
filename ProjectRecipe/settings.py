@@ -39,8 +39,7 @@ INSTALLED_APPS = [
     'userapp.apps.UserappConfig',
     'recipeapp.apps.RecipeappConfig',
     'rest_framework',
-    'rest_framework.authtoken',
-    'sslserver'
+    'rest_framework.authtoken'
 
 ]
 
