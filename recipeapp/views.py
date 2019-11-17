@@ -4,18 +4,18 @@ from rest_framework.permissions import IsAuthenticated
 
 from coreapp.models import Tag
 from coreapp.models import Ingredient
+from coreapp.models import Recipe
 from recipeapp import serializers
 
 
 class BaseRecipeAttrViewSet(viewsets.GenericViewSet,
-                      mixins.ListModelMixin,
-                      mixins.CreateModelMixin,
-                      mixins.RetrieveModelMixin,
-                      mixins.UpdateModelMixin,
-                      mixins.DestroyModelMixin):
-
+                            mixins.ListModelMixin,
+                            mixins.CreateModelMixin,
+                            mixins.RetrieveModelMixin,
+                            mixins.UpdateModelMixin,
+                            mixins.DestroyModelMixin):
     authentication_classes = (TokenAuthentication,)
-    permission_classes = (IsAuthenticated, )
+    permission_classes = (IsAuthenticated,)
 
     def get_queryset(self):
         """Return queryset data for an object"""
@@ -38,3 +38,17 @@ class IngredientViewSet(BaseRecipeAttrViewSet):
 
     queryset = Ingredient.objects.all()
     serializer_class = serializers.IngredientSerializer
+
+
+class RecipeViewSet(viewsets.ModelViewSet):
+    """Manage recipes endpoint"""
+
+    serializer_class = serializers.RecipeSerializer
+    queryset = Recipe.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+
+    def get_queryset(self):
+        """Retrieve the recipe for the authenticated user"""
+        return self.queryset.filter(custom_user=self.request.user)
+
