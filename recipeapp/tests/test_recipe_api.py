@@ -9,9 +9,28 @@ from coreapp.models import Recipe
 from coreapp.models import Tag
 from coreapp.models import Ingredient
 
-from recipeapp.serializers import RecipeSerializer
+from recipeapp.serializers import RecipeSerializer, RecipeDetailSerializer
 
 RECIPE_URL = reverse("recipeapp:recipe-list")
+
+
+# /api/recipe/recipes
+# api/recipe/recipes/1
+
+# ------HELPER FUNCTIONS----------
+def get_detail_URL(recipe_id):
+    """Return the recipe detail URL"""
+    return reverse('recipeapp:recipe-detail', args=[recipe_id])
+
+
+def create_sample_tag(user, name="spicy"):
+    """Sample tag for testing"""
+    return Tag.objects.create(custom_user=user, name=name)
+
+
+def create_sample_ingredient(user, name="cinnamon"):
+    """Sample tag for testing"""
+    return Ingredient.objects.create(custom_user=user, name=name)
 
 
 def create_sample_recipe(user, **params):
@@ -25,6 +44,7 @@ def create_sample_recipe(user, **params):
     return Recipe.objects.create(custom_user=user, **defaults)
 
 
+# ---------- TESTS --------------
 class PublicRecipeApiTest(TestCase):
     """Tests the publicly available API"""
 
@@ -76,6 +96,19 @@ class PrivateRecipeApiTest(TestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
         self.assertEqual(response.data, serializer.data)
+
+    def test_retrive_recipe_detail(self):
+        """Test for viewing a recipe detail"""
+        recipe = create_sample_recipe(user=self.sample_user)
+        recipe.tag.add(create_sample_tag(user=self.sample_user))
+        recipe.ingredient.add(create_sample_ingredient(user=self.sample_user))
+
+        detail_URL = get_detail_URL(recipe.id)
+        res = self.client.get(detail_URL)
+
+        serializer = RecipeDetailSerializer(recipe)
+
+        self.assertEqual(res.data, serializer.data)
 
     def test_create_new_recipe(self):
         ingredient_steak = Ingredient.objects.create(
