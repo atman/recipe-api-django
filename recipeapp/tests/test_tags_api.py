@@ -85,7 +85,7 @@ class PrivateTagsApiTests(TestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
     def test_create_invalid_tag(self):
-        """Test the creation of an invalid tag"""
+        """Test the creation of invalid tags"""
 
         payload = {
             'name': ''
